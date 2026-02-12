@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRITICAL SYSTEM ERROR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-1: #ffafbd;
+            --bg-2: #ffc3a0;
+            --primary: #ff6b6b;
+            --text: #4a4a4a;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a0a0a;
+            font-family: 'Poppins', sans-serif;
+            transition: background 2s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .terminal-text {
+            font-family: 'Share Tech Mono', monospace;
+            color: #2ecc71;
+            text-align: left;
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .story-card {
+            background: #fffafa;
+            border-left: 5px solid var(--primary);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 15px;
+            text-align: left;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .cute-btn {
+            background: var(--primary);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: 0.3s;
+        }
+
+        .cute-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255,107,107,0.4);
+        }
+
+        .date-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none; }
+        .fade-in { animation: fadeIn 0.8s ease-in forwards; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .heart {
+            position: fixed;
+            font-size: 1.5rem;
+            animation: float 6s linear infinite;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="bgItems"></div>
+
+<div class="container">
+    <div id="quizContent">
+        <div class="terminal-text" id="terminal">
+            > Initializing Security Protocol...<br>
+            > User: Devi_01<br>
+            > Warning: Owner of heart is slightly dramatic 🫏<br>
+            > Status: Multi-Factor Emotional Authentication Required.
+        </div>
+
+        <h3 id="quizTitle">Security Question 1</h3>
+        <p id="quizText">Is it true that you are the prettiest girl in the entire universe? 😌✨</p>
+
+        <div id="buttonArea">
+            <button class="cute-btn" onclick="wrongAnswer()">Maybe</button>
+            <button class="cute-btn" onclick="nextQuiz(2)">Obviously 💅</button>
+        </div>
+    </div>
+
+    <div id="loadingContent" class="hidden">
+        <h2>Processing Emotional Data...</h2>
+        <div class="loader"></div>
+        <p id="subText">Scanning donkey brain capacity...</p>
+    </div>
+
+    <div id="journeyContent" class="hidden"></div>
+</div>
+
+<script>
+const USER_NAME = "Devi";
+
+const JOURNEY = [
+    { date: "Feb 7 - Rose Day 🌹", title: "A Late Bloom", story: "I might have missed the actual day, but you are the only rose in my garden that blooms all year round. Every petal of my heart belongs to you.", quote: "You make life beautiful, just by being in it." },
+    { date: "Feb 8 - Propose Day 💍", title: "The Lifetime Proposal", story: "I don't just want to ask you to be mine for a day. I want to propose that we keep making memories, laughing at silly jokes, and growing together forever.", quote: "In a world of temporary things, you are my constant." },
+    { date: "Feb 9 - Chocolate Day 🍫", title: "Sweetness Beyond Words", story: "No chocolate in the world is as sweet as the way you smile at me. I'm sorry for the delay—I was busy finding the right words to tell you how much you mean to me.", quote: "Life with you is a treat I never want to end." },
+    { date: "Feb 10 - Teddy Day 🧸", title: "A Digital Hug", story: "Since I can't be there to give you a big bear hug right this second, let this page remind you that I'm always holding you in my thoughts.", quote: "You're my favorite place to be." },
+    { date: "Feb 11 - Promise Day 🤝", title: "A Vow from a Slightly Dramatic Donkey", story: "I may be silly. I may overthink. I may deserve a 'Best Donkey Award'. But I promise my love for you is real, steady, and forever.", quote: "Even a donkey can love deeply." },
+    { date: "Feb 12 - Hug Day 🤗", title: "Home in Your Arms", story: "When you hug me, the world becomes quiet. And my chaos finally rests.", quote: "Home is wherever you are." },
+    { date: "Feb 13 - Kiss Day 💋", title: "Magic in a Moment", story: "A kiss from you feels like time standing still — like the universe paused just to watch us.", quote: "One kiss. Infinite feeling." },
+    { date: "Feb 14 - Valentine's Day ❤️", title: "Final Confession", story: "Yes, I am dramatic. Yes, I am sometimes a certified donkey. But loving you? That’s the smartest decision of my entire life.", quote: "I choose you. Today. Tomorrow. Always." }
+];
+
+let currentStep = 0;
+let heartInterval;
+
+function wrongAnswer() {
+    alert("❌ ACCESS DENIED. Even this donkey knows that's wrong 😤");
+}
+
+function nextQuiz(step) {
+    const title = document.getElementById('quizTitle');
+    const text = document.getElementById('quizText');
+    const buttons = document.getElementById('buttonArea');
+    const terminal = document.getElementById('terminal');
+
+    if (step === 2) {
+        terminal.innerHTML += "<br>> Step 1 Verified. Beauty overload detected.";
+        title.innerText = "Security Question 2";
+        text.innerText = "Are you the one who tolerates this overthinking donkey and still smiles? 😌";
+        buttons.innerHTML = `
+            <button class="cute-btn" onclick="wrongAnswer()">No, upgrade required</button>
+            <button class="cute-btn" onclick="nextQuiz(3)">Yes, I am! ❤️</button>
+        `;
+    }
+    else if (step === 3) {
+        terminal.innerHTML += "<br>> Step 2 Verified. Donkey tolerated.";
+        title.innerText = "Security Question 3";
+        text.innerText = "Are you way out of this donkey's league but still choosing him? 🫏";
+        buttons.innerHTML = `
+            <button class="cute-btn" onclick="wrongAnswer()">Not sure</button>
+            <button class="cute-btn" onclick="nextQuiz(4)">Yes, but he’s cute 😂</button>
+        `;
+    }
+    else if (step === 4) {
+        terminal.innerHTML += "<br>> Step 3 Verified. League mismatch accepted.";
+        title.innerText = "Security Question 4";
+        text.innerText = "Do you promise to handle my overthinking, drama, and random stupidity? 😭";
+        buttons.innerHTML = `
+            <button class="cute-btn" onclick="wrongAnswer()">Sounds risky</button>
+            <button class="cute-btn" onclick="nextQuiz(5)">I’ll manage you 😌</button>
+        `;
+    }
+    else if (step === 5) {
+        terminal.innerHTML += "<br>> Step 4 Verified. Emotional risk approved.";
+        title.innerText = "Final Verification";
+        text.innerText = "Do you promise to read the next pages with your heart? ❤️";
+        buttons.innerHTML = `
+            <button class="cute-btn" onclick="wrongAnswer()">No</button>
+            <button class="cute-btn" onclick="startLoading()">I Promise ❤️</button>
+        `;
+    }
+}
+
+function startLoading() {
+    document.getElementById('quizContent').classList.add('hidden');
+    document.getElementById('loadingContent').classList.remove('hidden');
+
+    setTimeout(() => {
+        document.body.style.background = "linear-gradient(135deg, var(--bg-1), var(--bg-2))";
+        document.getElementById('loadingContent').classList.add('hidden');
+        document.getElementById('journeyContent').classList.remove('hidden');
+        startMagic();
+    }, 4000);
+}
+
+function startMagic() {
+    renderStep();
+    heartInterval = setInterval(createHeart, 600);
+}
+
+function renderStep() {
+    const data = JOURNEY[currentStep];
+    const journey = document.getElementById('journeyContent');
+    journey.innerHTML = `
+        <div class="fade-in">
+            <span class="date-badge">${data.date}</span>
+            <div class="story-card">
+                <h2 style="margin:0; color:#ff6b6b">${data.title}</h2>
+                <p>${data.story}</p>
+                <p style="font-style: italic; color: #ff4757;">"${data.quote}"</p>
+            </div>
+            <button class="cute-btn" onclick="nextStep()">
+                ${currentStep === JOURNEY.length - 1 ? "The Ultimate Question ❤️" : "Continue Journey →"}
+            </button>
+        </div>
+    `;
+}
+
+function nextStep() {
+    currentStep++;
+    if (currentStep < JOURNEY.length) renderStep();
+    else showFinalQuestion();
+}
+
+function showFinalQuestion() {
+    const journey = document.getElementById('journeyContent');
+    journey.innerHTML = `
+        <div class="fade-in">
+            <h1 style="font-family:'Dancing Script'; color:#ff4757">One Last Thing, ${USER_NAME}...</h1>
+            <p style="font-size: 1.3rem; font-weight:bold">Will you be mine forever? 💍</p>
+            <button class="cute-btn" onclick="celebrate()">YES ❤️</button>
+        </div>
+    `;
+}
+
+function celebrate() {
+    clearInterval(heartInterval);
+    document.getElementById('journeyContent').innerHTML = `
+        <div class="fade-in">
+            <h1 style="font-size: 3rem; color:#ff4757; margin-bottom: 10px;">YAY! 🥂</h1>
+            <h2 style="font-family: 'Dancing Script', cursive; color: #ff6b6b; font-size: 2.5rem; margin-top: 0;">
+                Happy Valentine's Day! ❤️
+            </h2>
+            <p style="font-size: 1.1rem;">You just made this donkey the happiest person alive.</p>
+            <p style="font-weight: bold; color: #ff4757;">I love you infinitely, Devi.</p>
+            <div style="font-size: 3.5rem; margin-top: 20px;">👸❤️🫏</div>
+        </div>
+    `;
+    // Intense heart shower for the finale
+    setInterval(createHeart, 150);
+}
+
+function createHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerHTML = ['❤️','💖','✨','🌸'][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    document.getElementById('bgItems').appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+}
+</script>
+
+</body>
+</html>
